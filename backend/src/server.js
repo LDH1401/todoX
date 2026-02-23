@@ -1,23 +1,19 @@
+import dotenv from 'dotenv';
 import express from 'express';
+import taskRoutes from './routes/taskRoutes.js';
+import { connect } from 'mongoose';
+import { connectDB } from './config/db.js';
+
+dotenv.config();
+
+const PORT = process.env.PORT || 5001;
 
 const  app = express();
 
-app.listen(5001, () => {
-    console.log('Server is running on port 5001');
+connectDB();
+
+app.use("/api/tasks", taskRoutes);
+
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });
-
-app.get("/api/tasks", (req, res) => {
-    res.send("hell1o")
-})
-
-app.post("/api/tasks", (req, res) => {
-    res.status(200).json({message: "Task created successfully"})
-})
-
-app.put("/api/tasks/:id", (req, res) => {
-    res.status(200).json({message: "Task updated successfully"})
-})
-
-app.delete("/api/tasks/:id", (req, res) => {
-    res.status(200).json({message: "Task deleted successfully"})
-})
