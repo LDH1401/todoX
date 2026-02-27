@@ -1,8 +1,7 @@
 import React from "react";
 import TaskEmptyState from "./TaskEmptyState";
 import TaskCard from "./TaskCard";
-const TaskList = ({filteredTasks}) => {
-    let filter = "all"
+const TaskList = ({filteredTasks, filter}) => {
     
     if(filteredTasks.length === 0 || !filteredTasks) {
         return <TaskEmptyState filter={filter}/>
