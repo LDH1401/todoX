@@ -5,7 +5,7 @@ export const getAllTasks = async (req, res) => {
         const tasks = await Task.find().sort({createdAt: -1}); // lấy tất cả tasks và sắp xếp theo createdAt giảm dần
         res.status(200).json(tasks);
     } catch (error) {
-        console.error("Error fetching tasks", error.message);
+        console.error("FULL ERROR:", error);
         res.status(500).json({message: "Error fetching tasks"});
     }
 }
@@ -24,13 +24,13 @@ export const createTask = async (req, res) => {
 
 export const updateTask = async (req, res) => {
     try {
-        const {title, status, completed} = req.body; // lấy title, status, completed từ request body
+        const {title, status, completedAt} = req.body; // lấy title, status, completed từ request body
         const updatedTask = await Task.findByIdAndUpdate(
             req.params.id, // lấy id từ request params
             {
                 title, 
                 status, 
-                completed
+                completedAt
             }, // cập nhật title, status, completed của task
             {new: true} // trả về task đã được cập nhật
         );

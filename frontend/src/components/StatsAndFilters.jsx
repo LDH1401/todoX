@@ -27,7 +27,7 @@ const StatsAndFilters = ({completedTasksCount = 0, activeTasksCount = 0, filter 
 
             {/* Phần bộ lọc */}
             <div className="flex flex-col gap-2 sm:flex-row">
-                {Object.keys(FilterType).map((type) => (
+                {Object.keys(FilterType).map((type) => ( // Lặp qua các loại bộ lọc và tạo nút cho mỗi loại
                     <Button 
                         key={type} 
                         variant={filter === type ? "gradient" : "ghost"} 

@@ -3,7 +3,7 @@ import React from "react";
 const TaskListPagination = () => {
     return (
         <div>
-
+            TaskListPagination
         </div>
     )
 }
