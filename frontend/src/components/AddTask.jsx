@@ -3,7 +3,7 @@ import { Card } from "./ui/card";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Plus } from "lucide-react";
-import axios from "axios";
+import api from "@/lib/axios";
 import { toast } from "sonner";
 
 const AddTask = ({ handleNewTaskAdded }) => {
@@ -12,7 +12,7 @@ const AddTask = ({ handleNewTaskAdded }) => {
     const addTask = async () => {
         if (newTask.trim()) {
             try {
-                await axios.post("http://localhost:5002/api/tasks", { title: newTask });
+                await api.post("/tasks", { title: newTask });
                 toast.success("Thêm nhiệm vụ thành công!");
                 
                 if (typeof handleNewTaskAdded === "function") {
@@ -47,7 +47,13 @@ const AddTask = ({ handleNewTaskAdded }) => {
                     value={newTask}
                     onKeyDown={handleKeyDown} // Cho phép người dùng nhấn Enter để thêm task
                 />
-                <Button variant="gradient" size="xl" className="px-6" onClick={addTask}>
+                <Button 
+                    variant="gradient" 
+                    size="xl" 
+                    className="px-6" 
+                    onClick={addTask}
+                    disabled={!newTask.trim()} // Vô hiệu hóa nút nếu input trống hoặc chỉ chứa khoảng trắng
+                >
                     <Plus className="size-5 mr-2"/>
                     Thêm
                 </Button>

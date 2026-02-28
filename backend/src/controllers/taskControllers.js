@@ -1,9 +1,30 @@
 import Task from '../models/Task.js';
 
 export const getAllTasks = async (req, res) => {
-    try {
+    const {filter = "today"} = req.query; // lấy filter từ query parameters
+    const now = new Date(); // lấy thời điểm hiện tại
+    let startDate; // biến để lưu thời điểm bắt đầu của khoảng thời gian cần lọc
+    switch (filter) {
+        case "today":
+            startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate()); // bắt đầu từ 00:00:00 của ngày hôm nay
+            break;
+        case "week":
+            const dayOfWeek = now.getDay(); // lấy thứ trong tuần (0-6, 0 là chủ nhật)
+            startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - dayOfWeek); // bắt đầu từ chủ nhật của tuần này
+            break;
+        case "month":
+            startDate = new Date(now.getFullYear(), now.getMonth(), 1); // bắt đầu từ ngày 1 của tháng này
+            break;
+        case "all":
+        default:
+            startDate = null; // không lọc theo thời gian, lấy tất cả tasks
+    }
 
+    const query = startDate ? {createdAt: {$gte: startDate}} : {}; // nếu có startDate thì lọc tasks có createdAt lớn hơn hoặc bằng startDate, nếu không thì lấy tất cả tasks
+
+    try {
         const result = await Task.aggregate([
+            {$match: query}, // lọc tasks theo query đã xác định
             {
                 $facet: {
                     tasks: [{$sort: {createdAt: -1}}], // sắp xếp tasks theo createdAt giảm dần
